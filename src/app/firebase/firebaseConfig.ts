@@ -3,13 +3,13 @@ import { getFirestore, collection, addDoc, getDoc, doc, Timestamp, getDocs, upda
 
 // Firebase-Konfiguration
 const firebaseConfig = {
-  apiKey: "AIzaSyD6z1w-MojqvEE6SgFEjuL4XCg-7VkhJsM",
-  authDomain: "quicklink-f3a09.firebaseapp.com",
-  projectId: "quicklink-f3a09",
-  storageBucket: "quicklink-f3a09.firebasestorage.app",
-  messagingSenderId: "959761003619",
-  appId: "1:959761003619:web:024b8f4327dac1aca8f456",
-  measurementId: "G-JB6FLS0RRV"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
 // Firebase initialisieren
