@@ -12,21 +12,26 @@ interface Note {
 
 const NotePage = () => {
   const router = useRouter();
-  const { noteId } = router.query;
+  const { noteId } = router.query; // Hier extrahierst du die noteId aus der URL
   const [note, setNote] = useState<Note | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Logs für die URL-Parameter und das Routing
   useEffect(() => {
-    console.log("useEffect ausgelöst"); // Log, wenn der useEffect ausgelöst wird
-    console.log("noteId aus router.query:", noteId); // Log, um sicherzustellen, dass noteId korrekt extrahiert wird
+    console.log("router.query:", router.query); // Loggt die gesamte Router-Abfrage
+    if (noteId) {
+      console.log("Routing für noteId:", noteId); // Loggt die noteId, wenn sie verfügbar ist
+    }
+  }, [noteId, router.query]); // Nur auslösen, wenn sich die noteId ändert
 
+  useEffect(() => {
     if (noteId) {
       const fetchNote = async () => {
         console.log("Daten werden abgerufen für noteId:", noteId); // Log, bevor die Notiz abgerufen wird
         try {
           const fetchedNote = await getNote(noteId as string);
-          console.log("Notiz abgerufen:", fetchedNote); // Log, um zu sehen, welche Daten zurückgegeben werden
+          console.log("Notiz abgerufen:", fetchedNote); // Loggt die abgerufene Notiz
 
           if (fetchedNote) {
             const noteData: Note = {
