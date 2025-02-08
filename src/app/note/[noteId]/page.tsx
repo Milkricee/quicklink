@@ -1,4 +1,3 @@
-// src/app/note/[noteId]/page.tsx
 "use client"; // Kennzeichnet die Komponente als Client-Komponente
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -12,7 +11,6 @@ import {
 interface Note {
   text: string;
   createdAt: Timestamp;
-  expiresAt: Timestamp;
   isRead: boolean;
 }
 
@@ -33,7 +31,6 @@ const NotePage = () => {
             const noteData: Note = {
               text: fetchedNote.text,
               createdAt: fetchedNote.createdAt,
-              expiresAt: fetchedNote.expiresAt,
               isRead: fetchedNote.isRead,
             };
             setNote(noteData);
@@ -58,30 +55,34 @@ const NotePage = () => {
   }, [noteId]);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
-
-  const isExpired = note ? note.expiresAt.toDate() < new Date() : false;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
-        <h1 className="text-2xl font-semibold text-center mb-4">Deine Notiz</h1>
-        <p>{note?.text}</p>
-        <p className="text-gray-600 mt-2">
-          Erstellt am: {note?.createdAt.toDate().toLocaleString()}
-        </p>
-        <p className="text-gray-600 mt-2">
-          Ablaufdatum: {note?.expiresAt.toDate().toLocaleString()}
-        </p>
-        {isExpired && (
-          <p className="text-red-600 mt-2">Diese Notiz ist abgelaufen.</p>
-        )}
-        <p className="text-gray-600 mt-2">
-          {note?.isRead
-            ? "Notiz wurde gelesen."
-            : "Notiz wurde noch nicht gelesen."}
-        </p>
-      </div>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4 relative">
+      {/* Fehlerbenachrichtigung */}
+      {error && (
+        <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white p-4 rounded-md shadow-lg">
+          {error}
+        </div>
+      )}
+
+      {/* Nur anzeigen, wenn eine Notiz abgerufen wurde */}
+      {note && (
+        <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
+          <h1 className="text-2xl font-semibold text-center mb-4">Message:</h1>
+          <p>{note.text}</p>
+          <p className="text-gray-600 mt-2">
+            Erstellt am:{" "}
+            {note.createdAt.toDate().toLocaleString("de-DE", {
+              hour12: false,
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

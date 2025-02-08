@@ -19,12 +19,10 @@ const db = getFirestore(app);
 // Funktion zum Erstellen einer Notiz
 export const createNote = async (text: string) => {
   try {
-    const expiresAt = Timestamp.fromDate(new Date(Date.now() + 5 * 60 * 60 * 1000)); // 5 Stunden nach Erstellung
 
     const docRef = await addDoc(collection(db, 'notes'), {
       text,
       createdAt: Timestamp.now(),
-      expiresAt,
       isRead: false,
     });
 
