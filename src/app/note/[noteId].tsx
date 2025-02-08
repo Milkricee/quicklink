@@ -18,11 +18,16 @@ const NotePage = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("noteId:", noteId); // Prüfen, ob noteId korrekt geladen wird
+    console.log("useEffect ausgelöst"); // Log, wenn der useEffect ausgelöst wird
+    console.log("noteId aus router.query:", noteId); // Log, um sicherzustellen, dass noteId korrekt extrahiert wird
+
     if (noteId) {
       const fetchNote = async () => {
+        console.log("Daten werden abgerufen für noteId:", noteId); // Log, bevor die Notiz abgerufen wird
         try {
           const fetchedNote = await getNote(noteId as string);
+          console.log("Notiz abgerufen:", fetchedNote); // Log, um zu sehen, welche Daten zurückgegeben werden
+
           if (fetchedNote) {
             const noteData: Note = {
               text: fetchedNote.text,
@@ -33,15 +38,18 @@ const NotePage = () => {
             setNote(noteData);
           } else {
             setError("Notiz nicht gefunden.");
+            console.error("Notiz nicht gefunden"); // Log für Fehler, wenn keine Notiz gefunden wird
           }
         } catch (err) {
           setError("Fehler beim Abrufen der Notiz.");
-          console.error(err); // Detaillierte Fehlerprotokollierung
+          console.error("Fehler beim Abrufen der Notiz:", err); // Log für Fehler, wenn der Abruf der Notiz fehlschlägt
         } finally {
           setLoading(false);
         }
       };
       fetchNote();
+    } else {
+      console.warn("Keine noteId in der URL gefunden"); // Log, wenn keine noteId in der URL vorhanden ist
     }
   }, [noteId]);
 

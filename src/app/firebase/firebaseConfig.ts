@@ -36,17 +36,22 @@ export const createNote = async (text: string) => {
   }
 };
 
-// Funktion zum Abrufen einer Notiz
 export const getNote = async (noteId: string) => {
-  const noteRef = doc(db, 'notes', noteId);
-  const docSnap = await getDoc(noteRef);
+  console.log("Abruf der Notiz mit ID:", noteId); // Log, um zu sehen, welche ID abgerufen wird
+  try {
+    const docRef = doc(db, "notes", noteId);
+    const docSnap = await getDoc(docRef);
 
-  if (docSnap.exists()) {
-    console.log("Notiz gefunden:", docSnap.data());
-    return docSnap.data();
-  } else {
-    console.log("Notiz nicht gefunden!");
-    return null;
+    if (docSnap.exists()) {
+      console.log("Notiz gefunden:", docSnap.data()); // Log, wenn die Notiz erfolgreich abgerufen wurde
+      return docSnap.data();
+    } else {
+      console.warn("Notiz nicht gefunden"); // Log, wenn keine Notiz für diese ID existiert
+      return null;
+    }
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Notiz aus Firebase:", error); // Log für Fehler bei Firebase
+    throw error;
   }
 };
 
