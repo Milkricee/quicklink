@@ -1,6 +1,6 @@
 // firebase/firebaseConfig.ts
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc, getDoc, doc, Timestamp } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, getDoc, doc, Timestamp, getDocs } from 'firebase/firestore';
 
 // Firebase-Konfiguration
 const firebaseConfig = {
@@ -49,3 +49,20 @@ export const getNote = async (noteId: string) => {
     return null;
   }
 };
+
+// Funktion zum Abrufen aller Notizen
+export const testConnection = async () => {
+  try {
+    const snapshot = await getDocs(collection(db, 'notes'));
+    if (snapshot.empty) {
+      console.log('Keine Notizen gefunden.');
+    } else {
+      snapshot.forEach(doc => {
+        console.log(doc.id, " => ", doc.data());
+      });
+    }
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Notizen:", error);
+  }
+};
+
