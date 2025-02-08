@@ -1,7 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async redirects() {
+    return [
+      {
+        source: '/old-note/:noteId',
+        destination: '/note/:noteId', // Umleitung auf die dynamische Route
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
