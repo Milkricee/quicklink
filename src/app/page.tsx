@@ -12,8 +12,8 @@ export default function Home() {
       // Notiz in Firestore speichern
       const noteId = await createNote(noteText);
       if (noteId) {
-        // Einmal-Link erstellen
-        const link = `${window.location.origin}/${noteId}`;
+        // Link korrekt generieren
+        const link = `${window.location.origin}/note/${noteId}`;
         setNoteText(""); // Notiz-Text zurücksetzen
         setNoteLink(link); // Den generierten Link setzen
       }
