@@ -57,7 +57,16 @@ const NotePage = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4 relative">
+    <div className="relative flex items-center justify-center min-h-screen bg-gray-100 p-4">
+      {/* Hintergrund-GIF */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: `url('https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHE3eXltcWR4YTMyMGppdTVzam9oeDBlanBlaGNsbmdvdm8waHF1MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/f4IjBQupqojhqQzKk2/giphy.gif')`,
+          pointerEvents: "none", // Verhindert Interaktionen mit dem Hintergrund
+        }}
+      />
+
       {/* Fehlerbenachrichtigung */}
       {error && (
         <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-600 text-white p-4 rounded-md shadow-lg">
@@ -67,7 +76,7 @@ const NotePage = () => {
 
       {/* Nur anzeigen, wenn eine Notiz abgerufen wurde */}
       {note && (
-        <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
+        <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md z-10 relative">
           <h1 className="text-2xl font-semibold text-center mb-4">Message:</h1>
           <p>{note.text}</p>
           <p className="text-gray-600 mt-2">
