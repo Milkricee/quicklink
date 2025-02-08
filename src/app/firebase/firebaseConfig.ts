@@ -1,6 +1,5 @@
-// firebase/firebaseConfig.ts
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc, getDoc, doc, Timestamp, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, getDoc, doc, Timestamp, getDocs, updateDoc, deleteDoc } from 'firebase/firestore';
 
 // Firebase-Konfiguration
 const firebaseConfig = {
@@ -36,6 +35,7 @@ export const createNote = async (text: string) => {
   }
 };
 
+// Funktion zum Abrufen einer Notiz
 export const getNote = async (noteId: string) => {
   console.log("Abruf der Notiz mit ID:", noteId); // Log, um zu sehen, welche ID abgerufen wird
   try {
@@ -55,6 +55,28 @@ export const getNote = async (noteId: string) => {
   }
 };
 
+// Funktion zum Markieren der Notiz als gelesen
+export const updateNoteStatus = async (noteId: string, isRead: boolean) => {
+  try {
+    const noteRef = doc(db, 'notes', noteId);
+    await updateDoc(noteRef, { isRead });
+    console.log("Notiz als gelesen markiert:", noteId);
+  } catch (error) {
+    console.error("Fehler beim Markieren der Notiz als gelesen:", error);
+  }
+};
+
+// Funktion zum Löschen der Notiz
+export const deleteNote = async (noteId: string) => {
+  try {
+    const noteRef = doc(db, 'notes', noteId);
+    await deleteDoc(noteRef);
+    console.log("Notiz gelöscht:", noteId);
+  } catch (error) {
+    console.error("Fehler beim Löschen der Notiz:", error);
+  }
+};
+
 // Funktion zum Abrufen aller Notizen
 export const testConnection = async () => {
   try {
@@ -70,4 +92,3 @@ export const testConnection = async () => {
     console.error("Fehler beim Abrufen der Notizen:", error);
   }
 };
-

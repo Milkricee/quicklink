@@ -3,7 +3,11 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Timestamp } from "firebase/firestore";
-import { getNote } from "../../firebase/firebaseConfig";
+import {
+  getNote,
+  updateNoteStatus,
+  deleteNote,
+} from "../../firebase/firebaseConfig";
 
 interface Note {
   text: string;
@@ -33,6 +37,12 @@ const NotePage = () => {
               isRead: fetchedNote.isRead,
             };
             setNote(noteData);
+
+            // Wenn die Notiz noch nicht gelesen wurde, markiere sie als gelesen und lösche sie danach
+            if (!fetchedNote.isRead) {
+              await updateNoteStatus(noteId, true); // Setze "isRead" auf true
+              await deleteNote(noteId); // Lösche die Notiz aus der Datenbank
+            }
           } else {
             setError("Notiz nicht gefunden.");
           }
