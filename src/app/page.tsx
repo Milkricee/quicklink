@@ -13,7 +13,7 @@ export default function Home() {
       const noteId = await createNote(noteText);
       if (noteId) {
         // Einmal-Link erstellen
-        const link = `${window.location.origin}/note/${noteId}`;
+        const link = `${window.location.origin}/${noteId}`;
         setNoteText(""); // Notiz-Text zurücksetzen
         setNoteLink(link); // Den generierten Link setzen
       }
