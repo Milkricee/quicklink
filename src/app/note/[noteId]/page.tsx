@@ -1,7 +1,9 @@
-import { useRouter } from "next/router";
+// src/app/note/[noteId]/page.tsx
+"use client"; // Kennzeichnet die Komponente als Client-Komponente
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getNote } from "../firebase/firebaseConfig"; // Firebase-Funktion zum Abrufen der Notiz
 import { Timestamp } from "firebase/firestore";
+import { getNote } from "../../firebase/firebaseConfig";
 
 interface Note {
   text: string;
@@ -11,28 +13,18 @@ interface Note {
 }
 
 const NotePage = () => {
-  const router = useRouter();
-  const { noteId } = router.query; // Hier extrahierst du die noteId aus der URL
+  const { noteId } = useParams<{ noteId: string }>(); // Hole die noteId aus der URL
   const [note, setNote] = useState<Note | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Logs für die URL-Parameter und das Routing
-  useEffect(() => {
-    console.log("router.query:", router.query); // Loggt die gesamte Router-Abfrage
-    if (noteId) {
-      console.log("Routing für noteId:", noteId); // Loggt die noteId, wenn sie verfügbar ist
-    }
-  }, [noteId, router.query]); // Nur auslösen, wenn sich die noteId ändert
-
   useEffect(() => {
     if (noteId) {
       const fetchNote = async () => {
-        console.log("Daten werden abgerufen für noteId:", noteId); // Log, bevor die Notiz abgerufen wird
         try {
-          const fetchedNote = await getNote(noteId as string);
-          console.log("Notiz abgerufen:", fetchedNote); // Loggt die abgerufene Notiz
-
+          const fetchedNote = await getNote(
+            Array.isArray(noteId) ? noteId[0] : noteId
+          );
           if (fetchedNote) {
             const noteData: Note = {
               text: fetchedNote.text,
@@ -43,18 +35,15 @@ const NotePage = () => {
             setNote(noteData);
           } else {
             setError("Notiz nicht gefunden.");
-            console.error("Notiz nicht gefunden"); // Log für Fehler, wenn keine Notiz gefunden wird
           }
         } catch (err) {
           setError("Fehler beim Abrufen der Notiz.");
-          console.error("Fehler beim Abrufen der Notiz:", err); // Log für Fehler, wenn der Abruf der Notiz fehlschlägt
+          console.error(err);
         } finally {
           setLoading(false);
         }
       };
       fetchNote();
-    } else {
-      console.warn("Keine noteId in der URL gefunden"); // Log, wenn keine noteId in der URL vorhanden ist
     }
   }, [noteId]);
 
