@@ -18,7 +18,7 @@ const NotePage = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("noteId:", noteId); // Überprüfen, ob die noteId korrekt geladen wird
+    console.log("noteId:", noteId); // Prüfen, ob noteId korrekt geladen wird
     if (noteId) {
       const fetchNote = async () => {
         try {
